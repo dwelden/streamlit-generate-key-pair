@@ -1,0 +1,5 @@
+.packages/
+.venv/
+.vscode/
+app.zip
+__pycache__

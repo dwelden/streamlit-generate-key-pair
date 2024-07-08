@@ -1,0 +1,9 @@
+definition_version: "1.1"
+streamlit:
+  name: Generate_Key_Pair_for_Authentication
+  stage: generate_key_pair_for_authentication
+  query_warehouse: MY_WAREHOUSE
+  main_file: streamlit_app.py
+  env_file: environment.yml
+  additional_source_files:
+    - images/keypair.jpeg
