@@ -31,10 +31,10 @@ def generate_key_pair(passphrase):
     return d
 
 def zip_for_download(keypair_dict):
+    """ Write the keys from the dictionary into a zip file"""
     zip_name = "keypair.zip"
-    zip_file = open(zip_name, mode="wb")
 
-    with zip_file as zf, ZipFile(zf, "w") as z:
+    with ZipFile(zip_name, "w") as z:
         for key, value in keypair_dict.items():
             z.writestr(key, value)
 
