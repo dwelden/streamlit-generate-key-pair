@@ -17,7 +17,8 @@ def generate_key_pair(passphrase):
 
     rsa_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     if not passphrase:
-        passphrase = ''.join((secrets.choice(string.ascii_letters) for i in range(20)))
+        characters = string.digits+string.ascii_letters
+        passphrase = ''.join((secrets.choice(characters) for i in range(20)))
 
     d = dict(
         encrypted_pem_private_key = rsa_key.private_bytes(pem, pkcs8, s.BestAvailableEncryption(passphrase.encode('utf-8'))).decode('utf-8'),
