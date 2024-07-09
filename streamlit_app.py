@@ -20,14 +20,26 @@ def generate_key_pair(passphrase):
         characters = string.digits+string.ascii_letters
         passphrase = ''.join((secrets.choice(characters) for i in range(20)))
 
-    d = dict(
-        encrypted_pem_private_key = rsa_key.private_bytes(pem, pkcs8, s.BestAvailableEncryption(passphrase.encode('utf-8'))).decode('utf-8'),
-        pem_private_key           = rsa_key.private_bytes(pem, pkcs8, s.NoEncryption()).decode('utf-8'),
-        pem_public_key            = rsa_key.public_key().public_bytes(pem, pub).decode('utf-8'),
-        passphrase                = passphrase,
-        private_key               = base64.b64encode(rsa_key.private_bytes(der, pkcs8, s.NoEncryption())).decode('utf-8'),
-        public_key                = base64.b64encode(rsa_key.public_key().public_bytes(der, pub)).decode('utf-8')
+    file_names = (
+        "encrypted_pem_private_key.pem",
+        "pem_private_key.pem",
+        "pem_public_key.pem",
+        "passphrase.txt",
+        "private_key.key",
+        "public_key.key"
     )
+
+    keys = (
+        rsa_key.private_bytes(pem, pkcs8, s.BestAvailableEncryption(passphrase.encode('utf-8'))).decode('utf-8'),
+        rsa_key.private_bytes(pem, pkcs8, s.NoEncryption()).decode('utf-8'),
+        rsa_key.public_key().public_bytes(pem, pub).decode('utf-8'),
+        passphrase,
+        base64.b64encode(rsa_key.private_bytes(der, pkcs8, s.NoEncryption())).decode('utf-8'),
+        base64.b64encode(rsa_key.public_key().public_bytes(der, pub)).decode('utf-8')
+    )
+
+    d = dict(zip(file_names, keys))
+
     return d
 
 def zip_for_download(keypair_dict):
@@ -35,8 +47,8 @@ def zip_for_download(keypair_dict):
     zip_name = "keypair.zip"
 
     with ZipFile(zip_name, "w") as z:
-        for key, value in keypair_dict.items():
-            z.writestr(key, value)
+        for file_name, key in keypair_dict.items():
+            z.writestr(file_name, key)
 
     return zip_name
 
